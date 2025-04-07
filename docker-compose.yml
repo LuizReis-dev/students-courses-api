@@ -1,0 +1,16 @@
+version: "3.9"
+name: "students-courses"
+services:
+  postgres:
+    container_name: students-courses-postgres
+    image: postgres:17.4-alpine
+    restart: always
+    ports:
+      - "5433:5433"
+    volumes:
+      - ./.data/postgresql/data:/var/lib/postgresql
+    environment:
+      POSTGRES_DB: students-courses
+      POSTGRES_USER: students-courses
+      POSTGRES_PASSWORD: 1234567
+    command: -p 5433
