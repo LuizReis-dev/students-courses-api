@@ -8,11 +8,19 @@ export class StudentController {
         const data: Student = request.body;
 
         try {
-            const user = await service.create(data);
-            response.status(201).json(user);
+            const student = await service.create(data);
+            response.status(201).json({
+                message : "Aluno criado com sucesso!",
+                student: student 
+            });
         } catch (error) {
-            console.log(error)
-            response.status(500).json({ message: "Erro ao criar aluno", error });
+            if (error instanceof Error) {
+                console.log(error.message);
+                response.status(500).json({ message: "Erro ao criar aluno", error: error.message });
+            } else {
+                console.log(String(error));
+                response.status(500).json({ message: "Erro ao criar aluno", error: "Erro desconhecido" });
+            }
         }
     }
 }
