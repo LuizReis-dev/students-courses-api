@@ -1,10 +1,5 @@
-export class Student {
+export interface Student {
     id?: number;
-    name!: string;
-    birthdate!: Date;
-
-    constructor(props: Omit<Student, "id">, id?: number) {
-        Object.assign(this, props);
-        if (id) this.id = id;
-    }
+    name: string;
+    birthdate: Date;
 }

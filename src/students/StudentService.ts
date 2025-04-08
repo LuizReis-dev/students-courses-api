@@ -1,18 +1,14 @@
-import { CreateStudentDTO } from "./CreateStudentDTO";
 import { Student } from "./Student";
-import { StudentDTO } from "./StudentDTO";
 import { StudentRepository } from "./StudentRepository";
 
 const repository = new StudentRepository();
 
 export class StudentService {
 
-    async create(dto: CreateStudentDTO) : Promise<{ message: string; student: StudentDTO }>  {
-        const data : Student = new Student({...dto});
+    async create(student: Student) : Promise<{ message: string; student: Student }>  {
 
-        let student = await repository.create(data);
+        let createdStudent = await repository.create(student);
 
-        let returnDto: StudentDTO = student;
-        return { message: "Usuário criado com sucesso", student: returnDto};
+        return { message: "Aluno criado com sucesso", student: createdStudent};
     }
 }

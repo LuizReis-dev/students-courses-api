@@ -9,6 +9,7 @@ export class StudentRepository {
             birthdate: student.birthdate
         }).returning("id");
         
-        return new Student({...student}, id.id);
+        student.id = id.id;
+        return student;
     }
 }
