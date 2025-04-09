@@ -5,14 +5,14 @@ const repository = new CourseRepository();
 
 export class CourseService {
 
-    async create(course: Course): Promise<{ course: Course }> {
+    async create(course: Course): Promise<Course> {
 
         if (!course.name || !course.description) {
             throw new Error("Informe nome e a descrição");
         }
         let createdCourse = await repository.create(course);
 
-        return { course: createdCourse };
+        return createdCourse;
     }
 
     async getAll(): Promise<Course[]> {

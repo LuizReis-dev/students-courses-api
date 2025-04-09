@@ -5,10 +5,9 @@ const repository = new StudentRepository();
 
 export class StudentService {
 
-    async create(student: Student): Promise<{ student: Student }> {
-
-        if (!student.name || !student.birthdate) {
-            throw new Error("Informe nome e data de nascimento");
+    async create(student: Student): Promise<Student> {
+        if (!student.name || !student.birthdate || !student.courses_ids) {
+            throw new Error("Informe nome, data de nascimento e os cursos do aluno");
         }
 
         const birthdate = new Date(student.birthdate);
@@ -16,9 +15,13 @@ export class StudentService {
             throw new Error("Informe uma data de nascimento válida");
         }
 
-        let createdStudent = await repository.create(student);
+        if(!student.courses_ids) {
+            throw new Error("Informe os cursos do aluno");
+        }
 
-        return { student: createdStudent };
+        let createdStudent = await repository.create(student);
+        delete createdStudent.courses_ids;
+        return createdStudent;
     }
 
     async getAll(): Promise<Student[]> {
@@ -27,7 +30,7 @@ export class StudentService {
 
     async getById(id: Number): Promise<Student> {
         let student = await repository.getById(id);
-        if (!student) {
+        if (!student || Object.keys(student).length == 0) {
             throw new Error("Aluno não encontrado");
         }
         return student;
@@ -35,12 +38,12 @@ export class StudentService {
 
     async update(id: Number, student: Student): Promise<Student> {
         let studentDb = await repository.getById(id);
-        if (!studentDb) {
+        if (!studentDb || Object.keys(studentDb).length == 0) {
             throw new Error("Aluno não encontrado");
         }
 
-        if (!student.name || !student.birthdate) {
-            throw new Error("Informe nome e data de nascimento");
+        if (!student.name || !student.birthdate || !student.courses_ids) {
+            throw new Error("Informe nome, data de nascimento e os cursos do aluno");
         }
 
         const birthdate = new Date(student.birthdate);
@@ -53,7 +56,7 @@ export class StudentService {
 
     async destroy(id: Number): Promise<void> {
         let studentDb = await repository.getById(id);
-        if (!studentDb) {
+        if (!studentDb || Object.keys(studentDb).length == 0) {
             throw new Error("Aluno não encontrado");
         }
 
