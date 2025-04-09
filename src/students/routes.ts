@@ -7,6 +7,7 @@ studentsRoutes.get("/students", StudentController.getAll);
 studentsRoutes.get("/students/:id", StudentController.getById);
 studentsRoutes.post("/students", StudentController.create);
 studentsRoutes.put("/students/:id", StudentController.update);
+studentsRoutes.patch("/students/:id", StudentController.patch);
 studentsRoutes.delete("/students/:id", StudentController.delete);
 
 export default studentsRoutes;

@@ -54,6 +54,32 @@ export class StudentService {
         return repository.update(id, student);
     }
 
+    async patch(id: Number, student: Student): Promise<Student> {
+        let studentDb = await repository.getById(id);
+        if (!studentDb || Object.keys(studentDb).length == 0) {
+            throw new Error("Aluno não encontrado");
+        }
+
+        if(student.name) {
+            studentDb.name = student.name;
+        }
+
+        if(student.birthdate) {
+            const birthdate = new Date(student.birthdate);
+            if (isNaN(birthdate.getTime())) {
+                throw new Error("Informe uma data de nascimento válida");
+            }
+            studentDb.birthdate = birthdate;
+        }
+
+        delete studentDb.courses_ids;
+        if(student.courses_ids) {
+            studentDb.courses_ids = student.courses_ids;
+        }
+
+        return repository.update(id, studentDb);
+    }
+
     async destroy(id: Number): Promise<void> {
         let studentDb = await repository.getById(id);
         if (!studentDb || Object.keys(studentDb).length == 0) {
