@@ -63,6 +63,24 @@ export class CourseController {
         }
     }
 
+    static async patch(request: Request, response: Response) {
+        try {
+            const id = Number(request.params.id);
+            if (isNaN(id)) {
+                throw Error("Id inválido");
+            }
+            const course = await service.patch(id, request.body);
+            response.status(200).json(course);
+        }
+        catch (error) {
+            if (error instanceof Error) {
+                response.status(400).json({ message: "Erro ao buscar curso", error: error.message });
+            } else {
+                response.status(400).json({ message: "Erro ao buscar curso", error: "Erro desconhecido" });
+            }
+        }
+    }
+
     static async delete(request: Request, response: Response) {
         try {
             const id = Number(request.params.id);

@@ -41,6 +41,22 @@ export class CourseService {
         return repository.update(id, course);
     }
 
+    async patch(id: Number, course: Course): Promise<Course> {
+        let courseDb = await repository.getById(id);
+        if (!courseDb) {
+            throw new Error("Curso não encontrado");
+        }
+
+        if (course.name) {
+            courseDb.name = course.name;
+       }
+
+       if (course.description) {
+            courseDb.description = course.description;
+        }
+
+        return repository.update(id, course);
+    }
     async destroy(id: Number): Promise<void> {
         let courseDb = await repository.getById(id);
         if (!courseDb) {
