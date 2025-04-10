@@ -26,40 +26,7 @@ export class StudentRepository {
     }
 
     async getAll(): Promise<Student[]> {
-        const rows = await db("tb_students as s")
-            .leftJoin("tb_students_courses as sc", "s.id", "sc.student_id")
-            .leftJoin("tb_courses as c", "c.id", "sc.course_id")
-            .select(
-                "s.id as student_id",
-                "s.name",
-                "s.birthdate",
-                "c.id as course_id",
-                "c.name as course_name",
-                "c.description as course_description"
-            );
-
-        const studentMap: Record<number, Student> = {};
-
-        for (const row of rows) {
-            if (!studentMap[row.student_id]) {
-                studentMap[row.student_id] = {
-                    id: row.student_id,
-                    name: row.name,
-                    birthdate: row.birthdate,
-                    courses: [],
-                };
-            }
-
-            if (row.course_id) {
-                studentMap[row.student_id].courses!.push({
-                    id: row.course_id,
-                    name: row.course_name,
-                    description: row.course_description
-                });
-            }
-        }
-
-        return Object.values(studentMap);
+        return db.select("*").from("tb_students");
     }
 
     async getById(id: Number): Promise<Student> {
